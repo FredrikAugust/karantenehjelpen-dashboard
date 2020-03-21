@@ -27,14 +27,17 @@ import authSaga from './sagas/auth';
 const sagaMiddleware = createSagaMiddleware();
 
 // Import slices here to generate root reducer
-const SLICES = [authSlice];
-const reducerMapObject = Object.fromEntries(
-  SLICES.map(slice => [slice.name, slice.reducer])
-);
-const appReducer = combineReducers(reducerMapObject);
+const reducerMapObject = {
+  // We can't use [authSlice.name] as TS isn't smart enough to understand that that is a constand and not a string
+  auth: authSlice.reducer,
+};
+
+const rootReducer = combineReducers(reducerMapObject);
+
+export type Store = ReturnType<typeof rootReducer>;
 
 const store = createStore(
-  appReducer,
+  rootReducer,
   composeWithDevTools(applyMiddleware(sagaMiddleware))
 );
 
