@@ -26,7 +26,7 @@ const Login: React.FC = () => {
   };
   return (
     <>
-      <Typography variant="h2">Sign in</Typography>
+      <Typography variant="h2">Logg inn</Typography>
       <FirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
     </>
   );

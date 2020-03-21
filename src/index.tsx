@@ -23,9 +23,10 @@ import createSagaMiddleware from 'redux-saga';
 
 // Import slices
 import auth from './reducers/auth';
+import requests from './reducers/requests';
 
 // Import sagas
-import authSaga from './sagas/auth';
+import requestsSaga from './sagas/requests';
 
 // Setup middlewares
 const sagaMiddleware = createSagaMiddleware();
@@ -34,6 +35,7 @@ const sagaMiddleware = createSagaMiddleware();
 const reducerMapObject = {
   // We can't use [authSlice.name] as TS isn't smart enough to understand that that is a constand and not a string
   auth: auth.reducer,
+  requests: requests.reducer,
 };
 
 const rootReducer = combineReducers(reducerMapObject);
@@ -46,13 +48,14 @@ const store = createStore(
 );
 
 // Run sagas
-sagaMiddleware.run(authSaga);
+sagaMiddleware.run(requestsSaga);
 
 // Set up firebase
 firebase.initializeApp(
   JSON.parse(process.env.REACT_APP_FIREBASE_CONFIG ?? '{}')
 );
 
+// Listen for login/sign out
 firebase.auth().onAuthStateChanged(user => {
   store.dispatch(auth.actions.setUser(user));
 });

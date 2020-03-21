@@ -43,7 +43,7 @@ const Page: React.FC = props => {
           </Link>
           {user && (
             <Button variant="contained" color="primary" onClick={onSignOut}>
-              Sign out
+              Logg ut
             </Button>
           )}
         </Toolbar>
