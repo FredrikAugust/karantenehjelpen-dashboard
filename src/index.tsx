@@ -2,7 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 // Stylesheet/reset imports
-import './index.css';
+import './index.scss';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 // Component imports
 import Router from './components/organisms/Router';
@@ -42,6 +43,7 @@ sagaMiddleware.run(authSaga);
 
 ReactDOM.render(
   <React.StrictMode>
+    <CssBaseline />
     <BrowserRouter>
       <Provider store={store}>
         <Router />
