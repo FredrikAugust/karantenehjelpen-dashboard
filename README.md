@@ -1,5 +1,12 @@
-# Boilerplate for React+Typescript+Redux+Redux-Saga+Material-UI+React-Router-Dom+React-Redux++
+# Boilerplate for modern React projects
 
-Works like a charm.
+## Technologies
 
-Stripped away all testing as this is for rapid prototyping. We can test in prod anyway.
+- React
+- Redux
+  - Redux-Saga
+  - React-Redux
+  - Redux-Devtools-Middleware
+- Material-UI
+- Eslint
+- Atomic component structure
