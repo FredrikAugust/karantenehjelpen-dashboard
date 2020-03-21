@@ -1,57 +1,37 @@
 import React from 'react';
 
-import { Switch, Route, useHistory, useLocation } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-
-import firebase from 'firebase/app';
-import 'firebase/auth';
+import { Switch, Route, useLocation, Redirect } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import App from './App';
 import NotFound from './NotFound';
 import Page from './Page';
 import Login from './Login';
-
-import auth from '../../reducers/auth';
+import { CircularProgress } from '@material-ui/core';
 
 const Router: React.FC = () => {
   // Redux hooks
-  const dispatch = useDispatch();
+  const { user, loaded } = useSelector(
+    (store: import('../..').Store) => store.auth
+  );
 
   // Router hooks
-  const history = useHistory();
   const location = useLocation();
 
-  // Store the unregister function so we can clean up on unmount
-  const [unregisterAuthObserver, setUnregisterAuthObserver] = React.useState<
-    firebase.Unsubscribe
-  >();
+  // Show loading indicator while waiting for google to give us auth status
+  if (!loaded) {
+    return <CircularProgress />;
+  }
 
-  React.useEffect(() => {
-    // We need to pass an update function, as if not, react will try to call the
-    // function immediately to set the value to the return type of that again,
-    // leading to an update during render (this makes React very angry).
-    setUnregisterAuthObserver(() =>
-      firebase.auth().onAuthStateChanged(user => {
-        dispatch(auth.actions.setUser(user));
+  // If user is not signed in and tries to access anything except for login
+  if (!user && location.pathname !== '/login') {
+    return <Redirect to="/login" />;
+  }
 
-        // If the user is not logged in and not on the login page, redirect to login
-        // We need to perform this inside the authStateChanged to avoid a race
-        // condition, where we redirect to /login before google gets to update
-        // our state, meaning that even if a user is set after the redirect,
-        // we're stuck on /login.
-        if (!user && location.pathname !== '/login') {
-          history.push('/login');
-        }
-      })
-    );
-
-    return () => {
-      // We force unwrap as it can't unmount before it mounts.
-      if (unregisterAuthObserver) {
-        unregisterAuthObserver();
-      }
-    };
-  }, []);
+  // If user is logged in and trying to access login
+  if (user && location.pathname === '/login') {
+    return <Redirect to="/" />;
+  }
 
   return (
     <Page>

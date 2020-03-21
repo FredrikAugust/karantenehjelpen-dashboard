@@ -1,16 +1,21 @@
 import React from 'react';
 
-import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
+import FirebaseAuth from 'react-firebaseui/FirebaseAuth';
 
 import firebase from 'firebase/app';
 import 'firebase/auth';
-import { useHistory } from 'react-router-dom';
+import { Typography } from '@material-ui/core';
 
 const Login: React.FC = () => {
-  const history = useHistory();
-
   // Configure FirebaseUI
   const uiConfig: firebaseui.auth.Config = {
+    callbacks: {
+      // Avoid redirects after sign-in.
+      signInSuccessWithAuthResult: () => {
+        return false;
+      },
+    },
+    credentialHelper: 'none',
     // Popup signin flow rather than redirect flow.
     signInFlow: 'redirect',
     // We will display Google and Facebook as auth providers.
@@ -18,17 +23,12 @@ const Login: React.FC = () => {
       firebase.auth.EmailAuthProvider.PROVIDER_ID,
       firebase.auth.GoogleAuthProvider.PROVIDER_ID,
     ],
-    credentialHelper: 'none',
-    callbacks: {
-      // Avoid redirects after sign-in.
-      signInSuccessWithAuthResult: () => {
-        history.push('/');
-        return false;
-      },
-    },
   };
   return (
-    <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
+    <>
+      <Typography variant="h2">Sign in</Typography>
+      <FirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
+    </>
   );
 };
 

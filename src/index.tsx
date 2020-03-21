@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 
 // Firebase
 import firebase from 'firebase/app';
+import 'firebase/auth';
 
 // Stylesheet/reset imports
 import './index.scss';
@@ -21,7 +22,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import createSagaMiddleware from 'redux-saga';
 
 // Import slices
-import authSlice from './reducers/auth';
+import auth from './reducers/auth';
 
 // Import sagas
 import authSaga from './sagas/auth';
@@ -32,7 +33,7 @@ const sagaMiddleware = createSagaMiddleware();
 // Import slices here to generate root reducer
 const reducerMapObject = {
   // We can't use [authSlice.name] as TS isn't smart enough to understand that that is a constand and not a string
-  auth: authSlice.reducer,
+  auth: auth.reducer,
 };
 
 const rootReducer = combineReducers(reducerMapObject);
@@ -51,6 +52,10 @@ sagaMiddleware.run(authSaga);
 firebase.initializeApp(
   JSON.parse(process.env.REACT_APP_FIREBASE_CONFIG ?? '{}')
 );
+
+firebase.auth().onAuthStateChanged(user => {
+  store.dispatch(auth.actions.setUser(user));
+});
 
 ReactDOM.render(
   <React.StrictMode>
