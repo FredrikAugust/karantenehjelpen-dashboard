@@ -1,6 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+// Firebase
+import firebase from 'firebase/app';
+
 // Stylesheet/reset imports
 import './index.scss';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -43,6 +46,11 @@ const store = createStore(
 
 // Run sagas
 sagaMiddleware.run(authSaga);
+
+// Set up firebase
+firebase.initializeApp(
+  JSON.parse(process.env.REACT_APP_FIREBASE_CONFIG ?? '{}')
+);
 
 ReactDOM.render(
   <React.StrictMode>

@@ -14,6 +14,9 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.primary.contrastText,
     textDecoration: 'none',
   },
+  container: {
+    paddingTop: theme.spacing(2),
+  },
 }));
 
 const Page: React.FC = props => {

@@ -1,17 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-type AuthState = {
-  name: string;
-};
+type AuthState = { user: firebase.User | null };
 
-const initialState: AuthState = { name: '' };
+const initialState: AuthState = { user: null };
 
 export default createSlice({
   initialState,
   name: 'auth',
   reducers: {
-    setName: (state, action: PayloadAction<string>) => {
-      state.name = action.payload;
+    setUser: (state, action: PayloadAction<firebase.User | null>) => {
+      state.user = action.payload;
     },
   },
 });
