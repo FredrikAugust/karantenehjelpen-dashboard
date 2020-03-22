@@ -36,4 +36,5 @@ export type Request = {
   paymentSolution: 'Vipps' | 'Kontant' | 'Bankoverføring';
   phoneNumber?: string;
   uid: string;
+  id: string;
 };

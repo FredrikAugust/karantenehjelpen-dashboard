@@ -3,7 +3,7 @@ import React from 'react';
 import { Switch, Route, useLocation, Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import App from './App';
+import Frontpage from './Frontpage';
 import NotFound from './NotFound';
 import Page from './Page';
 import Login from './Login';
@@ -36,7 +36,7 @@ const Router: React.FC = () => {
   return (
     <Page>
       <Switch>
-        <Route exact path="/" component={App} />
+        <Route exact path="/" component={Frontpage} />
         <Route exact path="/login" component={Login} />
         <Route component={NotFound} />
       </Switch>

@@ -1,8 +1,8 @@
 import { all, takeLeading, put } from 'redux-saga/effects';
 
-import requests, { sagaActions } from './../reducers/requests';
+import requests from './../reducers/requests';
 
-import firebase from 'firebase';
+import firebase from 'firebase/app';
 import 'firebase/firestore';
 
 function* fetchAllRequests() {
@@ -13,15 +13,16 @@ function* fetchAllRequests() {
 
   yield put(
     requests.actions.setRequests(
-      snapshot.docs.map(
-        e => e.data() as import('../declarations/Request').Request
-      )
+      snapshot.docs.map(e => ({
+        ...(e.data() as import('../declarations/Request').Request),
+        id: e.id,
+      }))
     )
   );
 }
 
 function* watchFetchAllRequests() {
-  yield takeLeading(sagaActions.fetchAllRequests().type, fetchAllRequests);
+  yield takeLeading(requests.actions.fetchAllRequests().type, fetchAllRequests);
 }
 
 export default function* requestsSaga() {
