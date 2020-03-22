@@ -1,4 +1,4 @@
-import { all, takeLeading, put } from 'redux-saga/effects';
+import { all, takeLeading, put, takeEvery } from 'redux-saga/effects';
 
 import requests from './../reducers/requests';
 
@@ -21,10 +21,26 @@ function* fetchAllRequests() {
   );
 }
 
+function* setConnectedUser(
+  action: ReturnType<typeof requests.actions.updateConnectedUser>
+) {
+  yield firebase
+    .firestore()
+    .collection('users')
+    .doc(action.payload.uid)
+    .collection('requests')
+    .doc(action.payload.id)
+    .set({ connectedUser: action.payload.connectedUser });
+}
+
 function* watchFetchAllRequests() {
   yield takeLeading(requests.actions.fetchAllRequests().type, fetchAllRequests);
 }
 
+function* watchSetConnectedUser() {
+  yield takeEvery(`requests/updateConnectedUser`, setConnectedUser);
+}
+
 export default function* requestsSaga() {
-  yield all([watchFetchAllRequests()]);
+  yield all([watchFetchAllRequests(), watchSetConnectedUser()]);
 }

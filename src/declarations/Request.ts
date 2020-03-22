@@ -15,11 +15,11 @@ export type Request = {
     type: string;
   };
   arrivalDescription?: string;
-  connectedUser?: {
+  connectedUser: {
     email: string;
-    name: string;
+    name?: string;
     phoneNumber?: string;
-  };
+  } | null;
   createdOn: {
     seconds: number;
     nanoseconds: number;
