@@ -39,6 +39,12 @@ const RequestCard: React.FC<RequestProps> = props => {
 
   const classes = useStyles();
 
+  /**
+   * This is a really wonky function. We need to check if the user is trying to
+   * set a connectedUser, or remove one, and handle accordingly. There's also a
+   * case where the backend doesn't necessarily provide us with both name and
+   * phoneNumber, so there's quite a lot of optionals.
+   */
   const onConnectedUserChange = (e: React.ChangeEvent<{ value: unknown }>) => {
     dispatch(
       requests.actions.updateConnectedUser({
@@ -54,15 +60,34 @@ const RequestCard: React.FC<RequestProps> = props => {
     );
   };
 
+  const onClickDelete: React.MouseEventHandler = () => {
+    dispatch(
+      requests.actions.deleteRequest({
+        uid: props.request.uid,
+        id: props.request.id,
+      })
+    );
+  };
+
   return (
     <Card key={props.request.id} className={classes.card}>
       <CardHeader
         subheader={new Date(
           props.request.createdOn.seconds * 1000
         ).toUTCString()}
-        title={props.request.address.place_name_no}
+        title={`${props.request.delivered ? '✅ ' : ''}${
+          props.request.address.place_name_no
+        }`}
       />
       <CardContent>
+        <Typography>
+          Navn: {props.request.name ?? 'Ikke tilgjengelig'}
+        </Typography>
+        <Typography>Epost: {props.request.email}</Typography>
+        <Typography>
+          Tlf.nr: {props.request.phoneNumber ?? 'Ikke tilgjengelig'}
+        </Typography>
+
         <Typography variant="overline">Handleliste</Typography>
         {props.request.items.length > 0 ? (
           <List>
@@ -100,7 +125,7 @@ const RequestCard: React.FC<RequestProps> = props => {
         </FormControl>
       </CardContent>
       <CardActions>
-        <Button variant="contained" color="secondary">
+        <Button variant="contained" color="secondary" onClick={onClickDelete}>
           Slett ordre
         </Button>
       </CardActions>

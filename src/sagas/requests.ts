@@ -33,14 +33,34 @@ function* setConnectedUser(
     .set({ connectedUser: action.payload.connectedUser });
 }
 
+function* deleteRequest(
+  action: ReturnType<typeof requests.actions.deleteRequest>
+) {
+  yield firebase
+    .firestore()
+    .collection('users')
+    .doc(action.payload.uid)
+    .collection('requests')
+    .doc(action.payload.id)
+    .delete();
+}
+
 function* watchFetchAllRequests() {
-  yield takeLeading(requests.actions.fetchAllRequests().type, fetchAllRequests);
+  yield takeLeading(`requests/fetchAllRequests`, fetchAllRequests);
 }
 
 function* watchSetConnectedUser() {
   yield takeEvery(`requests/updateConnectedUser`, setConnectedUser);
 }
 
+function* watchDeleteRequest() {
+  yield takeEvery(`requests/deleteRequest`, setConnectedUser);
+}
+
 export default function* requestsSaga() {
-  yield all([watchFetchAllRequests(), watchSetConnectedUser()]);
+  yield all([
+    watchFetchAllRequests(),
+    watchSetConnectedUser(),
+    watchDeleteRequest(),
+  ]);
 }

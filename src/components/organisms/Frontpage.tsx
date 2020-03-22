@@ -49,11 +49,9 @@ const App: React.FC = () => {
         pågående oppdrag
       </Typography>
       <div className={classes.cards}>
-        {requests
-          .filter(r => !r.delivered)
-          .map(r => (
-            <RequestCard key={r.id} request={r} />
-          ))}
+        {requests.map(r => (
+          <RequestCard key={r.id} request={r} />
+        ))}
       </div>
     </>
   );

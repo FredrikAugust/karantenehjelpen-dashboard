@@ -26,6 +26,17 @@ export default createSlice({
       state.requests.find(r => r.id === action.payload.id)!.connectedUser =
         action.payload.connectedUser;
     },
+    deleteRequest: (
+      state,
+      action: PayloadAction<{
+        uid: string;
+        id: string;
+      }>
+    ) => {
+      state.requests = state.requests.filter(
+        r => r.uid !== action.payload.uid && r.id !== action.payload.id
+      );
+    },
   },
 });
 
