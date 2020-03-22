@@ -1,6 +1,8 @@
-# Boilerplate for modern React projects
+# Adminpanel for karantenehjelpen
 
-## Technologies
+Støtte for å se og slette ordre. Kan også velge hvilken bruker som er assigned.
+
+## Teknologier
 
 - React
 - Redux
@@ -10,3 +12,4 @@
 - Material-UI
 - Eslint
 - Atomic component structure
+- Formik
