@@ -114,6 +114,7 @@ const RequestCard: React.FC<RequestProps> = props => {
             labelId="connected-user-select"
             value={props.request.connectedUser?.email ?? ''}
             onChange={onConnectedUserChange}
+            disabled={props.request.delivered}
           >
             <MenuItem value={undefined}>Ingen oppdragstager</MenuItem>
             {Object.entries(users).map(u => (
@@ -125,7 +126,12 @@ const RequestCard: React.FC<RequestProps> = props => {
         </FormControl>
       </CardContent>
       <CardActions>
-        <Button variant="contained" color="secondary" onClick={onClickDelete}>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={onClickDelete}
+          disabled={props.request.delivered}
+        >
           Slett ordre
         </Button>
       </CardActions>
